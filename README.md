@@ -1,1 +1,1 @@
-# rs3-aoc-discord
+# Runescape Discord Bot
