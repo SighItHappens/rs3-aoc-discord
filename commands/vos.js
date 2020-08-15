@@ -1,5 +1,4 @@
 const axios = require('axios');
-const { token, url } = require('../config/config.json');
 
 module.exports = {
     name: 'vos',
@@ -8,12 +7,12 @@ module.exports = {
 
         let config = {
             headers: {
-                Authorization: 'Bearer ' + token
+                Authorization: 'Bearer ' + process.env.TWITTER_TOKEN
             }
         }
 
         let districts = [];
-        await axios.get(url, config)
+        await axios.get(process.env.VOS_TWITTER_URL, config)
             .then(res => {
                 for (let tweet of res.data) {
                     if (tweet.text.includes('Voice of Seren')) {
@@ -29,8 +28,8 @@ module.exports = {
         const vosEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Voice of Seren')
-            .addField('Active Districts', districts, true)
-            .setTimestamp();
+            .setDescription('')
+            .addField('Active Districts', districts, true);
 
         await message.channel.send(vosEmbed);
     },

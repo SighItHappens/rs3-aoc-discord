@@ -16,6 +16,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+if (app.get('env') === 'development') {
+  require('dotenv').config();
+}
+
 // create connection to Discord
 require('./loaders/discord')
 

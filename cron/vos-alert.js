@@ -1,19 +1,18 @@
-const {botchannel, vos, token, url} = require('../config/config.json');
 const axios = require('axios');
+const {Client} = require('pg');
 
 module.exports = {
     name: 'vos-alert',
     description: 'Alert !',
     async execute(client) {
-
         let config = {
             headers: {
-                Authorization: 'Bearer ' + token
+                Authorization: 'Bearer ' + process.env.TWITTER_TOKEN
             }
         }
 
         let districts = [];
-        await axios.get(url, config)
+        await axios.get(process.env.VOS_TWITTER_URL, config)
             .then(res => {
                     for (let tweet of res.data) {
                         console.log(tweet.text);
@@ -27,11 +26,22 @@ module.exports = {
                 }
             );
 
-        for (const channel of botchannel) {
-            for (const district of districts) {
-                client.channels.cache.get(channel).send(`<@&${vos[district]}> The Voice of Seren is now active in the ${district} district.`);
+        const pgClient = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                rejectUnauthorized: false
             }
-        }
+        });
 
+        pgClient.connect();
+        pgClient.query('SELECT CHANNEL_ID, AMLODD, CADARN, CRWYS, HEFIN, IORWERTH, ITHELL, MEILYR, TRAHAEARN FROM CHANNELS;', (err, res) => {
+            if (err) throw err;
+            for (let row of res.rows) {
+                for (const district of districts) {
+                    client.channels.cache.get(row.channel_id).send(`<@&${row[district.toLowerCase()]}> The Voice of Seren is now active in the ${district} district.`);
+                }
+            }
+            pgClient.end();
+        });
     },
 };

@@ -1,7 +1,6 @@
 const fs = require('fs');
 const cron = require("node-cron");
 const Discord = require('discord.js');
-const { prefix, vos } = require('../config/config.json');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -18,6 +17,7 @@ client.once('ready', () => {
 });
 
 client.on('message', message => {
+    const prefix = process.env.PREFIX;
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -37,13 +37,12 @@ client.on('message', message => {
 const command = require('../cron/vos-alert');
 client.commands.set(command.name, command);
 
-cron.schedule("* * * * *", function() {
+cron.schedule("2 * * * *", function() {
     try {
         client.commands.get('vos-alert').execute(client);
     } catch (error) {
         console.error(error);
     }
-    // client.channels.cache.get("").send(`<@&743946484000751707> Sending test message at: ${Date.now()}`);
 });
 
-client.login('NzQyMjI0NTM0MTk4ODEyNjky.XzDAdg.lNIalZ0ioPJNwKgv8hSX1LXYqFI');
+client.login(process.env.DISCORD_TOKEN);
