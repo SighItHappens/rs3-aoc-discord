@@ -1,0 +1,21 @@
+{
+  "name": "jenny",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cookie-parser": "~1.4.4",
+    "dblapi.js": "^2.4.0",
+    "debug": "~2.6.9",
+    "discord.js": "^12.2.0",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "node-cron": "^2.0.3",
+    "pug": "2.0.0-beta11",
+    "request": "^2.88.2"
+  }
+}
