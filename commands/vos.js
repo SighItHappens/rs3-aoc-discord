@@ -14,6 +14,7 @@ module.exports = {
         let districts = [];
         await axios.get(process.env.VOS_TWITTER_URL, config)
             .then(res => {
+                console.log(res);
                 for (let tweet of res.data) {
                     if (tweet.text.includes('Voice of Seren')) {
                         let words = tweet.text.split(' ');
@@ -28,7 +29,6 @@ module.exports = {
         const vosEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Voice of Seren')
-            .setDescription('')
             .addField('Active Districts', districts, true);
 
         await message.channel.send(vosEmbed);

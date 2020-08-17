@@ -20,8 +20,8 @@ module.exports = {
                             let words = tweet.text.split(' ');
                             districts.push(words[9]);
                             districts.push(words[11]);
+                            break;
                         }
-                        break;
                     }
                 }
             );
@@ -36,7 +36,9 @@ module.exports = {
         pgClient.connect();
         pgClient.query('SELECT CHANNEL_ID, AMLODD, CADARN, CRWYS, HEFIN, IORWERTH, ITHELL, MEILYR, TRAHAEARN FROM CHANNELS;', (err, res) => {
             if (err) throw err;
+            console.log(districts);
             for (let row of res.rows) {
+                console.log(row);
                 for (const district of districts) {
                     client.channels.cache.get(row.channel_id).send(`<@&${row[district.toLowerCase()]}> The Voice of Seren is now active in the ${district} district.`);
                 }
