@@ -107,7 +107,7 @@ dist
 .dynamodb/
 
 # Node persist Local files
-localStorage/
+/localStorage/
 
 # TernJS port file
 .tern-port
@@ -124,3 +124,4 @@ localStorage/
 
 # OCR Temp files
 *.traineddata
+
