@@ -125,3 +125,4 @@ dist
 # OCR Temp files
 *.traineddata
 
+/localStorage/
