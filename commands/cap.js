@@ -1,5 +1,4 @@
 const Tesseract = require('tesseract.js');
-const storage = require('node-persist');
 
 module.exports = {
     name: 'cap',
@@ -41,23 +40,27 @@ module.exports = {
             }
         }
 
-        let cappedList = await storage.getItem('cappedMembers');
+        const cappedMembersRef = db.collection('capped-members');
+        const snapshot = await cappedMembersRef.where('server-id', '==', message.guild.id).limit(1).get();
+        let documentId = snapshot.docs[0].id;
+        let cappedObject = snapshot.docs[0].data();
+
+        let cappedList = cappedObject['capped-members'];
         let addToList = true;
 
         for (let user of cappedList) {
             if (capForOthers && user.rsn == cappedUser.rsn) {
                 addToList = false;
                 break;
-            } else if (!capForOthers && !cappedUser.verified && user.recordedBy == cappedUser.recordedBy) {
-                addToList = false;
-                break;
-            } else if (!capForOthers && cappedUser.verified && user.recordedBy == cappedUser.recordedBy && user.rsn == cappedUser.rsn) {
+            } else if (!capForOthers && user.recordedBy == cappedUser.recordedBy && user.rsn == cappedUser.rsn) {
                 addToList = false;
                 break;
             }
         }
+
         if (addToList) {
             cappedList.push(cappedUser);
+            await cappedMembersRef.doc(documentId).update({'capped-members': cappedList});
 
             if (cappedUser.verified) {
                 message.channel.send(`<@${message.author.id}>, thank you for capping! Capping has been verified for RSN: ${cappedUser.rsn}!`);
@@ -75,8 +78,5 @@ module.exports = {
                 message.channel.send(`<@${message.author.id}>, a cap request for you has already been received!`);
             }
         }
-
-        await storage.setItem('cappedMembers', cappedList);
     },
-}
-;
+};

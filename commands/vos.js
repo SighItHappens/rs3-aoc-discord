@@ -4,7 +4,6 @@ module.exports = {
     name: 'vos',
     description: 'Voice of Seren',
     async execute(message, Discord, args) {
-
         let config = {
             headers: {
                 Authorization: 'Bearer ' + process.env.TWITTER_TOKEN
@@ -14,7 +13,6 @@ module.exports = {
         let districts = [];
         await axios.get(process.env.VOS_TWITTER_URL, config)
             .then(res => {
-                console.log(res);
                 for (let tweet of res.data) {
                     if (tweet.text.includes('Voice of Seren')) {
                         let words = tweet.text.split(' ');

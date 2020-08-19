@@ -106,9 +106,6 @@ dist
 # DynamoDB Local files
 .dynamodb/
 
-# Node persist Local files
-/localStorage/
-
 # TernJS port file
 .tern-port
 
@@ -125,4 +122,5 @@ dist
 # OCR Temp files
 *.traineddata
 
-/localStorage/
+# GCP Firestore credentials
+aoc-runescape-discord.json

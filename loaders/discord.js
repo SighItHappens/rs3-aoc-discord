@@ -41,7 +41,7 @@ client.on('message', message => {
 
 });
 
-const command = require('../cron/vos-alert');
+const command = require('../cron/clock-alert');
 client.commands.set(command.name, command);
 
 cron.schedule("2 * * * *", function() {

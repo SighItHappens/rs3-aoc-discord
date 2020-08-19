@@ -1,10 +1,11 @@
-const storage = require('node-persist');
-
 module.exports = {
     name: 'cap-list',
     description: 'Clears list of capped members',
     async execute(message, Discord, args) {
-        let cappedList = await storage.getItem('cappedMembers');
+        const cappedMembersRef = db.collection('capped-members');
+        const snapshot = await cappedMembersRef.where('server-id', '==', message.guild.id).limit(1).get();
+        let cappedObject = snapshot.docs[0].data();
+        let cappedList = cappedObject['capped-members'];
 
         const vosEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
