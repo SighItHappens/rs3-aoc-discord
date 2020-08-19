@@ -1,15 +1,9 @@
 const fs = require('fs');
 const cron = require('node-cron');
-const storage = require('node-persist');
 const Discord = require('discord.js');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
-
-storage.init({dir: 'localStorage'}).then( (res, err) => {
-    if(err) console.log(err);
-    console.log('Storage Initialized!');
-});
 
 const commandFiles = fs.readdirSync(process.cwd() + '/commands').filter(file => file.endsWith('.js'));
 
