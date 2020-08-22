@@ -7,11 +7,11 @@ module.exports = {
 
         for (let user of cappedMembers) {
             if (user.verified) {
-                capListEmbed.addField(`RSN: ${user.rsn}`, `Verified: :white_check_mark:\nVerified by: ${user.recordedBy}`);
+                capListEmbed.addField(`Name: ${user.rsn}`, `Verified: :white_check_mark:\nVerified by: ${user.recordedBy}`);
             } else if (!user.verified && user.rsn) {
-                capListEmbed.addField(`RSN: ${user.rsn}`, `Verified: :no_entry_sign:\nRequested by: ${user.recordedBy}`);
+                capListEmbed.addField(`Name: ${user.rsn}`, `Verified: :no_entry_sign:\nRequested by: ${user.recordedBy}`);
             } else {
-                capListEmbed.addField(`Discord: ${user.recordedBy}`, 'Verified: :no_entry_sign:\nRequested by: Self');
+                capListEmbed.addField(`Name: ${user.recordedBy}`, 'Verified: :no_entry_sign:\nRequested by: Self');
             }
         }
 

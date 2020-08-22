@@ -6,7 +6,6 @@ module.exports = {
     syntax: '!cap-list',
     displayHelp: true,
     async execute(message, Discord, args) {
-        console.log(message);
         const cappedMembersRef = db.collection('capped-members');
         const snapshot = await cappedMembersRef.where('server-id', '==', message.guild.id).limit(1).get();
         let cappedObject = snapshot.docs[0].data();

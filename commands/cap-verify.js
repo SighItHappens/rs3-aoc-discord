@@ -13,7 +13,6 @@ module.exports = {
 
         let access = false;
         for (let role of adminRoles) {
-            console.log(`Checking: ${message.member.roles.cache.has(role)}`);
             if (message.member.roles.cache.has(role)) {
                 access = true;
                 break;
@@ -36,6 +35,7 @@ module.exports = {
 
             for (let user of cappedMembers) {
                 if (!user.rsn && user.recordedBy === userName && !user.verified) {
+                    user.rsn = userName;
                     user.verified = true;
                     user.recordedBy = message.author.username;
                     break;
