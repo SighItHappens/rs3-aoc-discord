@@ -27,10 +27,11 @@ module.exports = {
             return;
         }
 
+        let details = client.commands;
         const helpEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle(`${commandName} Help`)
-            .addField(`!${client.commands.get(commandName).name}`, `${client.commands.get(commandName).description}\n${client.commands.get(commandName).syntax}`);
+            .addField(`!${details.name}`, `${details.description}\n\`${details.syntax}\`\n${details.warnings?'_'+details.warnings+'_':''}`);
         await message.channel.send(helpEmbed);
 
     },
