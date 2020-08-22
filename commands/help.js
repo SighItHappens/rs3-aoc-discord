@@ -27,7 +27,7 @@ module.exports = {
             return;
         }
 
-        let details = client.commands;
+        let details = client.commands.get(commandName);
         const helpEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle(`${commandName} Help`)
