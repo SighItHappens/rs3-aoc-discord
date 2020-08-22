@@ -1,8 +1,11 @@
 module.exports = {
     name: 'cap-clear',
     description: 'Clears list of capped members',
+    syntax: '!cap-clear (optional RSN)',
+    warnings: '**Use with caution** Not including an RSN will clear the entire list',
+    displayHelp: true,
     async execute(message, Discord, args) {
-        if (args.length == 1) {
+        if (args.length === 1) {
             let userName = args[0];
 
             const cappedMembersRef = db.collection('capped-members');
@@ -13,9 +16,9 @@ module.exports = {
             let cappedMembers = cappedObject['capped-members'];
 
             for (let user of cappedMembers) {
-                if (!user.rsn && user.recordedBy == userName) {
+                if (!user.rsn && user.recordedBy === userName) {
                     cappedMembers.splice(cappedMembers.indexOf(user), 1);
-                } else if (user.rsn && user.rsn == userName) {
+                } else if (user.rsn && user.rsn === userName) {
                     cappedMembers.splice(cappedMembers.indexOf(user), 1);
                 }
             }

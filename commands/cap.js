@@ -2,7 +2,10 @@ const Tesseract = require('tesseract.js');
 
 module.exports = {
     name: 'cap',
-    description: 'Checking capping',
+    description: 'Raise a cap request',
+    syntax: '!cap (optional RSN)',
+    warnings: 'Including a screenshot with this message will auto-verify the request',
+    displayHelp: true,
     async execute(message, Discord, args) {
         let cappedUser = {};
         let capForOthers = false;
@@ -17,7 +20,7 @@ module.exports = {
                         {}
                     ).then(({data: {text}}) => {
                         cappedUser.verified = true;
-                        cappedUser.recordedBy = message.author.username;
+                        cappedUser.recordedBy = 'Screenshot';
                         cappedUser.rsn = text.substring(text.indexOf('Clan System') + 12, text.indexOf('has capped') - 1);
                     });
                 } catch (e) {
@@ -49,10 +52,10 @@ module.exports = {
         let addToList = true;
 
         for (let user of cappedList) {
-            if (capForOthers && user.rsn == cappedUser.rsn) {
+            if (capForOthers && user.rsn === cappedUser.rsn) {
                 addToList = false;
                 break;
-            } else if (!capForOthers && user.recordedBy == cappedUser.recordedBy && user.rsn == cappedUser.rsn) {
+            } else if (!capForOthers && user.recordedBy === cappedUser.recordedBy && user.rsn === cappedUser.rsn) {
                 addToList = false;
                 break;
             }

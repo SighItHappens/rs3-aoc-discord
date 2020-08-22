@@ -2,7 +2,9 @@ const axios = require('axios');
 
 module.exports = {
     name: 'vos',
-    description: 'Voice of Seren',
+    description: 'Get the current Voice of Seren',
+    syntax: '!vos',
+    displayHelp: true,
     async execute(message, Discord, args) {
         let config = {
             headers: {
