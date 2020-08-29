@@ -9,8 +9,10 @@ module.exports = {
     async execute(message, Discord, args) {
         let cappedUser = {};
         let capForOthers = false;
+        logger.info(`${message.guild.id}: Cap request received`);
 
         if (message.attachments.size > 0) {
+            logger.debug(`${message.guild.id}: Processing with attachment`);
             for (let entry of message.attachments.entries()) {
                 let imageUrl = entry[1].url;
                 try {
@@ -34,6 +36,7 @@ module.exports = {
                 }
             }
         } else {
+            logger.debug(`${message.guild.id}: Processing without attachment`);
             cappedUser.verified = false;
             cappedUser.recordedBy = message.author.username;
 
@@ -43,6 +46,7 @@ module.exports = {
             }
         }
 
+        logger.info(`${message.guild.id}: Updating capped list`);
         const cappedMembersRef = db.collection('capped-members');
         const snapshot = await cappedMembersRef.where('server-id', '==', message.guild.id).limit(1).get();
         let documentId = snapshot.docs[0].id;
@@ -61,6 +65,7 @@ module.exports = {
             }
         }
 
+        logger.info(`${message.guild.id}: Saving capped list`);
         if (addToList) {
             cappedList.push(cappedUser);
             await cappedMembersRef.doc(documentId).update({'capped-members': cappedList});

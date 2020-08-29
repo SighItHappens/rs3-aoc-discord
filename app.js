@@ -1,8 +1,13 @@
 const createError = require('http-errors');
 const express = require('express');
+const pino = require('pino');
+const expressPino = require('express-pino-logger');
+
+global.logger = pino({ level: process.env.LOG_LEVEL || 'info' });
+const expressLogger = expressPino({ logger });
+
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
 
 const app = express();
 
@@ -10,7 +15,7 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
+app.use(expressLogger);
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
