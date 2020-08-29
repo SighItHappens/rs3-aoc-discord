@@ -3,7 +3,7 @@ const express = require('express');
 const pino = require('pino');
 const expressPino = require('express-pino-logger');
 
-global.logger = pino({ level: process.env.LOG_LEVEL || 'info' });
+global.logger = pino({ level: process.env.LOG_LEVEL || 'debug' });
 const expressLogger = expressPino({ logger });
 
 const path = require('path');

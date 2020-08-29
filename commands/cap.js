@@ -1,4 +1,4 @@
-const Tesseract = require('tesseract.js');
+const { createWorker } = require('tesseract.js');
 
 module.exports = {
     name: 'cap',
@@ -12,20 +12,29 @@ module.exports = {
         logger.info(`${message.guild.id}: Cap request received`);
 
         if (message.attachments.size > 0) {
-            logger.debug(`${message.guild.id}: Processing with attachment`);
+            logger.info(`${message.guild.id}: Processing with attachment`);
             for (let entry of message.attachments.entries()) {
                 let imageUrl = entry[1].url;
                 try {
-                    await Tesseract.recognize(
-                        imageUrl,
-                        'eng',
-                        {}
-                    ).then(({data: {text}}) => {
-                        cappedUser.verified = true;
-                        cappedUser.recordedBy = 'Screenshot';
-                        cappedUser.rsn = text.substring(text.indexOf('Clan System') + 12, text.indexOf('has capped') - 1);
+
+                    const worker = createWorker({
+                        logger: m => logger.debug(m),
                     });
+
+                    await worker.load();
+                    await worker.loadLanguage('eng');
+                    await worker.initialize('eng');
+                    const { data: { text } } = await worker.recognize(imageUrl);
+                    logger.debug(text);
+
+                    cappedUser.verified = true;
+                    cappedUser.recordedBy = 'Screenshot';
+                    cappedUser.rsn = text.substring(text.indexOf('Clan System') + 12, text.indexOf('has capped') - 1);
+
+                    await worker.terminate();
+
                 } catch (e) {
+                    logger.error(`${message.guild.id}: Error processing screenshot`);
                     cappedUser.verified = false;
                     cappedUser.recordedBy = message.author.username;
 
@@ -36,7 +45,7 @@ module.exports = {
                 }
             }
         } else {
-            logger.debug(`${message.guild.id}: Processing without attachment`);
+            logger.info(`${message.guild.id}: Processing without attachment`);
             cappedUser.verified = false;
             cappedUser.recordedBy = message.author.username;
 
