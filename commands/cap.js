@@ -17,6 +17,7 @@ module.exports = {
                 let imageUrl = entry[1].url;
                 try {
 
+                    logger.debug(`${message.guild.id}: Processing URL: ${imageUrl}`);
                     const worker = createWorker({
                         logger: m => logger.debug(m),
                     });

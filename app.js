@@ -3,6 +3,8 @@ const express = require('express');
 const pino = require('pino');
 const expressPino = require('express-pino-logger');
 
+const healthRouter = require('./api/healthController');
+
 global.logger = pino({ level: process.env.LOG_LEVEL || 'debug' });
 const expressLogger = expressPino({ logger });
 
@@ -20,6 +22,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/health', healthRouter);
 
 if (app.get('env') === 'development') {
     require('dotenv').config();
